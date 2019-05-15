@@ -24,7 +24,7 @@ export default class Contract {
             while(this.airlines.length < 5) {
                 this.airlines.push(accts[counter++]);
             }
-
+            counter = 15
             while(this.passengers.length < 5) {
                 this.passengers.push(accts[counter++]);
             }
@@ -45,7 +45,10 @@ export default class Contract {
                 .send({from: this.owner, gas:650000}, (error, result) => {
                     console.log('CD987 registered');
                 });
-
+            this.flightSuretyApp.methods.registerFlight(this.web3.utils.fromAscii('BC777'), Math.floor(Date.now() / 1000))
+                .send({from: this.owner, gas:650000}, (error, result) => {
+                    console.log('BC777 registered');
+                });
             callback();
         });
     }
@@ -78,7 +81,7 @@ export default class Contract {
         } 
         self.flightSuretyApp.methods
             .buy( self.web3.utils.fromAscii(payload.flight))
-            .send({ from: self.passengers[0], value:self.web3.utils.toWei(payload.amount, "ether")}, (error, result) => {
+            .call({ from: self.passengers[0], value:self.web3.utils.toWei(payload.amount, "ether")}, (error, result) => {
                 callback(error, payload);
             });
     }
