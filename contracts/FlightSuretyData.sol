@@ -168,7 +168,7 @@ contract FlightSuretyData {
     {
         require(flights[_flightNumber].isRegistered, "Flight unknown");
         require(flights[_flightNumber].statusCode == 0, "Flight has taken off");
-        require(flights[_flightNumber].buyers[_passenger] == 0, "Passenger already bought insurance for this flight");
+        require(!(flights[_flightNumber].buyers[_passenger] > 0), "Passenger already bought insurance for this flight");
         flights[_flightNumber].buyers[_passenger] = _amount;
         flights[_flightNumber].buyerAddresses.push(_passenger);
         flights[_flightNumber].credits = flights[_flightNumber].credits.add((_amount.mul(15)).div(10));
