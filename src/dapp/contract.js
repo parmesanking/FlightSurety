@@ -67,6 +67,7 @@ export default class Contract {
             flight: flight,
             timestamp: Math.floor(Date.now() / 1000)
         } 
+
         self.flightSuretyApp.methods
             .fetchFlightStatus(payload.airline, self.web3.utils.fromAscii(payload.flight), payload.timestamp)
             .send({ from: self.owner}, (error, result) => {
@@ -81,7 +82,7 @@ export default class Contract {
         } 
         self.flightSuretyApp.methods
             .buy( self.web3.utils.fromAscii(payload.flight))
-            .call({ from: self.passengers[0], value:self.web3.utils.toWei(payload.amount, "ether")}, (error, result) => {
+            .send({from:self.passengers[0], value:self.web3.utils.toWei(payload.amount, "ether"), gas:500000}, (error, result) => {
                 callback(error, payload);
             });
     }
