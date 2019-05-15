@@ -293,6 +293,37 @@ contract('Flight Surety Tests', async (accounts) => {
     assert.equal(parseInt(newBalance) > parseInt(initialBalance), true, "passenger didn't get money back");
     assert.equal(errOnPay, false, "error on getting money");
   });
+  it('(Passengers) Passengers cannot pay insurance twice for the same flight.', async () => {
+
+    let passenger1 = accounts[13];
+
+    let flight = web3.utils.fromAscii('ZZ999');
+
+    let value1 = web3.utils.toWei('1', "ether");
+
+    let result1 = false;
+
+    await config.flightSuretyApp.registerFlight(flight, Math.floor(Date.now() /1000), {from: config.firstAirline});
+    
+    try {
+      await config.flightSuretyApp.buy(flight, {from: passenger1, value: value1});
+    }
+    catch(e) {
+      console.log(e)
+      
+    }
+    try {
+      await config.flightSuretyApp.buy(flight, {from: passenger1, value: value1});
+    }
+    catch(e) {
+      console.log(e)
+      result1 = true;
+    }
+
+    // ASSERT
+    assert.equal(result1, true, "the passenger cannot pay the insurance twice");
+
+  });
 });
 
 
