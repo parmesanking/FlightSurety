@@ -316,7 +316,6 @@ contract('Flight Surety Tests', async (accounts) => {
       await config.flightSuretyApp.buy(flight, {from: passenger1, value: value1});
     }
     catch(e) {
-      console.log(e)
       result1 = true;
     }
 
